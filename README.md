@@ -23,7 +23,5 @@ sudo ip link set up vcan0
 
 ## 4- Probarla con un envío y una recepción.
 Abra dos terminales
-
-En el primero escriba: candump vcan0
-
-En el segundo: cansend vcan0 123#11223344
+  * En el primero escriba: candump vcan0
+  * En el segundo: cansend vcan0 123#11223344
