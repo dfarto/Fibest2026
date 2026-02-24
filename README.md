@@ -11,8 +11,11 @@ sudo apt install can-utils
 
 ## 1- Activar en ubuntu los canales de CAN:
 sudo modprobe can
+
 sudo modprobe can_raw
+
 sudo modprobe can_dev
+
 sudo modprobe vcan
 
 ## 2- Verificar que se hayan activado con
