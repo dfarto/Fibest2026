@@ -6,6 +6,7 @@ Creación de los canales virtuales del taller.
 
 ## 0- Instalar si no se tienen los canales 
 sudo apt update
+
 sudo apt install can-utils
 
 ## 1- Activar en ubuntu los canales de CAN:
