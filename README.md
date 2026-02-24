@@ -30,3 +30,9 @@ sudo ip link set up vcan0
 Abra dos terminales
   * En el primero escriba: candump vcan0
   * En el segundo: cansend vcan0 123#11223344
+
+## 5- Instalaciones previas.
+* venv: sudo apt install python3-venv python3-pip
+* Crear el entorno virtual: python3 -m venv .venv
+* activar el entorno virtual: source .venv/bin/activate
+* Instalaciones de can en python: pip install python-can
