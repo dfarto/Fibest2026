@@ -23,6 +23,7 @@ lsmod | grep can
 
 ## 3- Levantar las interfaces virtuales
 sudo ip link add dev vcan0 type vcan
+
 sudo ip link set up vcan0
 
 ## 4- Probarla con un envío y una recepción.
