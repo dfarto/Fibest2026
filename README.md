@@ -36,3 +36,9 @@ Abra dos terminales
 * Crear el entorno virtual: python3 -m venv .venv
 * activar el entorno virtual: source .venv/bin/activate
 * Instalaciones de can en python: pip install python-can
+
+
+## Principales funciones de python-can
+* Message: para crear el mensaje: Message(arbitration_id=0x123, data=[1,2,3,4], is_extended_id=False)
+* send: para enviar un mensaje, send(msg, timeout=None)
+* recv: para escuchar un canal, termina con el primer mensaje escuchado, recv(timeout=None)
