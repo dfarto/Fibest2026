@@ -1,16 +1,19 @@
+
+import sys
+
 import random
 import can
 import threading
 from time import sleep, time
 
 class VirtualECU:
-    def __init__(self, request_id, response_id):
+    def __init__(self, request_id, response_id, channel="vcan0"):
         """
         Inicializa una ECU virtual.
         """
         self.request_id = request_id
         self.response_id = response_id
-        self.bus = can.interface.Bus(interface="socketcan", channel="vcan0", bitrate=500000)
+        self.bus = can.interface.Bus(interface="socketcan", channel=channel, bitrate=500000)
         self.running = False
         self.thread = None
         self.sesion = 1
@@ -399,13 +402,13 @@ class VirtualECUManager:
         """
         self.ecus = []
 
-    def create_vecu(self):
+    def create_vecu(self, channel):
         """
         Genera una ECU virtual con IDs aleatorios.
         """
         request_id = random.randint(0x600, 0x7EE)
         response_id = request_id + random.randint(0x05,0x10)  # Frame ID cercano
-        vecu = VirtualECU(request_id, response_id)
+        vecu = VirtualECU(request_id, response_id, channel=channel)
         vecu.start()
         self.ecus.append(vecu)
         return vecu
@@ -421,13 +424,16 @@ class VirtualECUManager:
 
 # Ejemplo de uso
 if __name__ == "__main__":
+    
+    channel = sys.argv[1]
+
     # Configuración del bus CAN
     # Crear el manejador de ECUs virtuales
     manager = VirtualECUManager()
 
     # Crear varias ECUs virtuales
     for _ in range(1):
-        manager.create_vecu()
+        manager.create_vecu(channel=channel)
 
     try:
         while True:
