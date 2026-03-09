@@ -24,7 +24,7 @@ basic_msg_thread = threading.Thread(target=capture_response)
 basic_msg_thread.start()
 while not id_res:
     bus.send(msg)
-    sleep(0.01)
+    sleep(0.1)
     if not id_res:
         msg.arbitration_id += 1
     else: 
