@@ -45,9 +45,13 @@ class VirtualECU:
         Detiene la ECU virtual.
         """
         self.running = False
+        print("DEAD")
         if self.thread is not None:
             self.bus.shutdown()
-            self.thread.join()
+            try:
+                self.thread.join()
+            except:
+                pass
 
     def send_basic_msg(self):
         """
@@ -383,11 +387,9 @@ class VirtualECU:
                         is_extended_id=False
                     )
                     self.bus.send(response)
-            if message and message.arbitration_id <= 0x300:
+            if message and message.arbitration_id <= 0x005:
                 self.low_ids += 1
-            else:
-                self.low_ids = 0
-            if message and data[:8] == self.basic_msg.data[:8] and time() - self.prev_timeout < 0.9:
+            elif message and data[:8] == self.basic_msg.data[:8] and time() - self.prev_timeout < 0.9:
                 self.low_ids += 2
             else:
                 self.prev_timeout = time()
