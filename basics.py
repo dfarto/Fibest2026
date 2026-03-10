@@ -1,11 +1,7 @@
 import can
 from threading import Thread
 
-bus = can.interface.Bus(
-  interface="socketcan", 
-  channel="vcan0", 
-  bitrate=500000
-)
+bus = can.interface.Bus(interface="socketcan", channel="vcan0", bitrate=500000)
 
 def escucha():
 	global bus
