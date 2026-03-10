@@ -1,10 +1,10 @@
 import can
 from time import sleep
 
-request_id = 0x6DB
-response_id = 0x6E8
+request_id = 0x695
+response_id = 0x69f
 
-bus = can.interface.Bus(interface="socketcan", channel=channel, bitrate=500000)
+bus = can.interface.Bus(interface="socketcan", channel="vcan0", bitrate=500000)
 
 #step 1: extended session.
 msg = can.Message(
@@ -25,7 +25,7 @@ bus.send(msg)
 while True:
     response = bus.recv(1)
     if response and response.arbitration_id == response_id and list(response.data)[1]==0x67:
-        data = list(response.data)[3:]
+        dataa = list(response.data)[3:]
         break
 sleep(0.1)
 # Decrypt tries:
@@ -33,7 +33,7 @@ sleep(0.1)
 
 msg = can.Message(
     arbitration_id=request_id,
-    data=[0x07,0x27, 0x02] + decrypt,
+    data=[0x07,0x27, 0x02] + dataa and dataa,
     is_extended_id=False
 )
 bus.send(msg)
