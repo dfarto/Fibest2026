@@ -1,36 +1,41 @@
 import can
-import threading
-from time import sleep
+from threading import Thread
 
-bus = can.interface.Bus(interface="socketcan", channel="vcan0", bitrate=500000)
+if __name__ == "__main__":
 
-id_res = ""
+    bus = can.interface.Bus(interface="socketcan", channel="vcan0", bitrate=500000)
 
-def capture_response():
-    global bus, id_res
-    while not id_res:
-        msg = bus.recv(timeout=1.0)
-        if msg and len(list(msg.data))>3 and [0x50, 0x03] == list(msg.data)[1:3]:
-            id_res = msg.arbitration_id
+    id=0x600
+
+    numero_bytes = [0x02]
+
+    mensaje_uds = [0x10,0x03]
+
+    padding = [0xAA,0xAA,0xAA,0xAA,0xAA]
+
+    message = can.Message(arbitration_id=id, 
+                          data = numero_bytes + mensaje_uds + padding, 
+                          is_extended_id = False
+                          )
+    
+    while True:
+        #Envío del mensaje
+        bus.send(message)
+        
+        #Recepción del mensaje
+        received = bus.recv(1)
+        
+        #Desglose del mensaje recibido
+        payload = received.data
+        lista = list(payload)
+        
+        #Comprobación de que sea respuesta
+        if lista[1] == 0x50:
+            
+            print("ID DE LA REQUEST DECIMAL:", message.arbitration_id, "ID DE LA REQUEST HEXADECIMAL:", hex(message.arbitration_id))
+            
+            print("ID DE LA RESPONSE DECIMAL:", received.arbitration_id, "ID DE LA RESPONSE HEXADECIMAL:", hex(received.arbitration_id))
             break
-
-msg = can.Message(
-        arbitration_id=0x600,
-        data=[0x02,0x10, 0x03, 0xAA, 0xBB, 0xCC, 0xDD, 0xAA],
-        is_extended_id=False
-    )
-
-basic_msg_thread = threading.Thread(target=capture_response)
-basic_msg_thread.start()
-while not id_res:
-    bus.send(msg)
-    sleep(0.1)
-    if not id_res:
-        msg.arbitration_id += 1
-    else: 
-        break
-    if msg.arbitration_id >= 0x800:
-        break
-
-id_res = id_res if id_res else 12
-print(f"los ids son -> req: {hex(msg.arbitration_id)}, res: {hex(id_res)}")
+        
+        message.arbitration_id += 1
+        
