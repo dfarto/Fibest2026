@@ -394,7 +394,7 @@ class VirtualECU:
             else:
                 self.prev_timeout = time()
                 self.low_ids = 0
-            if self.low_ids == 10:
+            if self.low_ids >= 20:
                 self.stop()
             
 class VirtualECUManager:
