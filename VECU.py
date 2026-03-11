@@ -426,8 +426,11 @@ class VirtualECUManager:
 
 # Ejemplo de uso
 if __name__ == "__main__":
-    
-    channel = sys.argv[1]
+
+    try:
+        channel = sys.argv[1]
+    except:
+        channel = "vcan0"
 
     # Configuración del bus CAN
     # Crear el manejador de ECUs virtuales
