@@ -25,7 +25,7 @@ bus.send(msg)
 while True:
     response = bus.recv(1)
     if response and response.arbitration_id == response_id and list(response.data)[1]==0x67:
-        dataa = list(response.data)[3:]
+        data = list(response.data)[3:]
         break
 sleep(0.1)
 # Decrypt tries:
@@ -33,7 +33,7 @@ sleep(0.1)
 
 msg = can.Message(
     arbitration_id=request_id,
-    data=[0x07,0x27, 0x02] + dataa and dataa,
+    data=[0x07,0x27, 0x02] + data,
     is_extended_id=False
 )
 bus.send(msg)
